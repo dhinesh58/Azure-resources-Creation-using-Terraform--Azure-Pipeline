@@ -1,0 +1,61 @@
+
+trigger:
+- main
+
+pool:
+  name: 'azureagent'
+
+variables:
+  arm_client_id: $(Terraform-SP-Variables.ARM_CLIENT_ID)
+  arm_client_secret: $(Terraform-SP-Variables.ARM_CLIENT_SECRET)
+  arm_tenant_id: $(Terraform-SP-Variables.ARM_TENANT_ID)
+  arm_subscription_id: $(Terraform-SP-Variables.ARM_SUBSCRIPTION_ID)
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Installtion
+  inputs:
+    terraformVersion: 'latest'
+- task: TerraformTaskV4@4
+  displayName: Terraform Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'CICD-Terraform'
+    backendAzureRmResourceGroupName: 'Backend-RG'
+    backendAzureRmStorageAccountName: 'productionbackend12'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'terraform.tfstate'
+- task: TerraformTaskV4@4
+  displayName: Terraform Validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+- task: TerraformTaskV4@4
+  displayName: Terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'CICD-Terraform'
+- task: TerraformTaskV4@4
+  displayName: Terraform plan
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    commandOptions: '--auto-approve'
+    environmentServiceNameAzureRM: 'CICD-Terraform'
+- task: ArchiveFiles@2
+  displayName: Artifacts
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- task: PublishBuildArtifacts@1
+  displayName: Publish
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: '$(Build.BuildId)-build'
+    publishLocation: 'Container'
+
