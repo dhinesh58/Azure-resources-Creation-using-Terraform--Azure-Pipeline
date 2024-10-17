@@ -13,7 +13,7 @@ variables:
 
 steps:
 - task: TerraformInstaller@1
-  displayName: Terraform Installtion
+  displayName: Terraform Installation
   inputs:
     terraformVersion: 'latest'
 - task: TerraformTaskV4@4
@@ -21,13 +21,13 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'CICD-Terraform'
+    backendServiceArm: 'CICD'
     backendAzureRmResourceGroupName: 'Backend-RG'
     backendAzureRmStorageAccountName: 'productionbackend12'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'terraform.tfstate'
 - task: TerraformTaskV4@4
-  displayName: Terraform Validate
+  displayName: Terraform Validates
   inputs:
     provider: 'azurerm'
     command: 'validate'
@@ -36,18 +36,11 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    environmentServiceNameAzureRM: 'CICD-Terraform'
-- task: TerraformTaskV4@4
-  displayName: Terraform plan
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    commandOptions: '--auto-approve'
-    environmentServiceNameAzureRM: 'CICD-Terraform'
+    environmentServiceNameAzureRM: 'CICD'
 - task: ArchiveFiles@2
-  displayName: Artifacts
+  displayName: Archive
   inputs:
-    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    rootFolderOrFile: '$(Build.SourcesDirectory)/'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -58,4 +51,3 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: '$(Build.BuildId)-build'
     publishLocation: 'Container'
-
