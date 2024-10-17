@@ -19,7 +19,7 @@ Creating Azure resources using Terraform in an Azure Pipeline involves setting u
    Define the pipeline in YAML: 
    Create a azure-pipelines.yml file in the root of the repository
 
-![alt text](image-1.png)
+![image-1 image](image-1.png)
 
 
 
