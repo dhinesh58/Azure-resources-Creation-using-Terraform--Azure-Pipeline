@@ -5,7 +5,7 @@ on:
     branches:
       - main #trigger only for commits pushed on the main branch
 jobs:
-  terraform plan
+  terraform-plan
     name: terraform 
     runs-on: ubuntu-latest
     steps:
