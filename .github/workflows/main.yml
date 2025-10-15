@@ -96,4 +96,4 @@ jobs:
         env:
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        run: terraform apply --auto-approve tfplane
+        run: terraform apply --auto-approve tfplan
