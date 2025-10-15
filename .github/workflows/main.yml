@@ -59,3 +59,5 @@ jobs:
         with:
           name: tfplan
           path: tfplan    
+      - name: Terraform apply
+        run: terraform apply  
