@@ -22,7 +22,7 @@ jobs:
           terraform_version: ${{ env.WORKING_DIR }}
 
       - name: Terraform init
-        working_directory: ${{ env.WORKING_DIR }}
+        working-directory: ${{ env.WORKING_DIR }}
         run: terraform init -input=false
 
       - name: Terraform Validate
