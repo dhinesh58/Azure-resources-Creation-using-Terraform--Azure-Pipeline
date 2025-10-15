@@ -60,4 +60,8 @@ jobs:
           name: tfplan
           path: tfplan    
       - name: Terraform apply
+        working-directory: ${{ env.WORKING_DIR }}
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         run: terraform apply  
