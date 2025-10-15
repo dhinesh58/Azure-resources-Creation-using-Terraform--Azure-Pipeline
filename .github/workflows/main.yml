@@ -11,7 +11,7 @@ jobs:
   terraform-plan:
     name: terraform
     runs-on: ubuntu-latest
-    #if: github.event_name == 'pull_request'#
+    if: github.event_name == 'pull_request'
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
@@ -20,6 +20,12 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{ env.WORKING_DIR }}
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
 
       - name: Terraform init
         working-directory: ${{ env.WORKING_DIR }}
