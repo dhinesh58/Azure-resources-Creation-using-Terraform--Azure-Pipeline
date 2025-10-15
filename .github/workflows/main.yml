@@ -4,19 +4,40 @@ on:
   push:
     branches:
       - main #trigger only for commits pushed on main branch
+env:
+  TF_VERSION: 1.9.5
+  WORKING_DIR: ./
 jobs:
   terraform-plan:
-    name: terraform 
+    name: terraform
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
-      - name: checkout
-        uses: actions/checkout@v4
+      - name: checkout repo
+        uses: actions/checkout@v2
 
+      - name: setup Terraform
+        uses: hashicrop/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.WORKING_DIR }}
 
+      - name: Terraform init
+        working_directory: ${{ env.WORKING_DIR }}
+        run: terraform init -input=false
 
+      - name: Terraform Validate
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform validate
 
+      - name: Terraform fmt
+        working-directory: ${{ env.WORKING_DIR }}
+        run: terraform fmt
 
-
-
-
-
+      - name: Terraform plan
+        working-directory: ${{ env.WORKING_DIR }}
+        env:
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          echo "$ZURE_CREDENTIALS" > azure.json
+          terraform plan -input=false -out=tfplan
