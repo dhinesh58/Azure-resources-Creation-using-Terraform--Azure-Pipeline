@@ -14,7 +14,7 @@ jobs:
     #if: github.event_name == 'pull_request'
     steps:
       - name: checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Azure Login
         uses: azure/login@v2
@@ -22,7 +22,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Azure CLI
-        uses: azure/cli@v2
+        uses: azure/cli@v4
         with:
           azcliversion: latest
           inlineScript: |
@@ -55,7 +55,7 @@ jobs:
           terraform plan -input=false -out=tfplan
 
       - name: Upload Plan artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: tfplan
           path: tfplan    
