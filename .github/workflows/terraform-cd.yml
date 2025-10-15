@@ -13,26 +13,26 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Download Plan artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: tfplan
           path: .
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: 1.9.5
 
       - name: Azure Login
-        uses: azure/login@v2
+        uses: azure/login@v4
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Azure CLI
-        uses: azure/cli@v2
+        uses: azure/cli@v4
         with:
           azcliversion: latest
           inlineScript: |
