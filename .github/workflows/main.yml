@@ -1,4 +1,4 @@
-name: Terraform CI/CD
+name: Terraform C
 
 on:
   push:
@@ -53,3 +53,9 @@ jobs:
         run: |
           echo "$ZURE_CREDENTIALS" > azure.json
           terraform plan -input=false -out=tfplan
+
+      - name: Upload Plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan    
