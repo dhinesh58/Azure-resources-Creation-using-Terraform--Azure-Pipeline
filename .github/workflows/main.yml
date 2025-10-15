@@ -69,6 +69,7 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
+      - name: Download Plan Artifact
         uses: actions/download-artifact@v4
         with:
           name: tfplan
